@@ -38,7 +38,7 @@ def face_detect_MTCNN(img):
         if i["confidence"] > 0.9:
             face_result.append(i)
     if len(face_result) == 0:
-        return (img, "顔を検出出来ません。")
+        return (img, 0,0)
     else:
         (x, y, w, h) = face_result[0]["box"]
         cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
@@ -48,7 +48,7 @@ def face_detect_MTCNN(img):
         face_image = img[y:y + h, x:x + w]
         name, count = sorakoko_judge(face_image)
         count = int(count * 10000) / 100
-        return (img, f"{count}%{name}です")
+        return (img, count, name)
 
 
 def scale_to_width(img, width):  # PIL画像をアスペクト比を固定してリサイズする。
@@ -62,7 +62,10 @@ def scale_to_width(img, width):  # PIL画像をアスペクト比を固定して
 
 
 if __name__ == '__main__':
-    st.title("セレブカメラだよ！")
+    st.title("あなたの顔のセレブ度は！？")
+    """
+    *AIが、似ている海外セレブと一致度を判定するよ!!!*
+    """
     uploaded_file_h = st.file_uploader("写真を入れてね", type=["png", "jpg","jpeg"], accept_multiple_files=False)
     if uploaded_file_h is not None:
         image = Image.open(uploaded_file_h)
@@ -77,9 +80,23 @@ if __name__ == '__main__':
         im_width = result_image.shape[0]
         aspect = im_height / im_width
         result_image = cv2.resize(result_image, (int(500 * aspect), 500))
-        comment = image[1]
-
-        st.image(result_image, caption=comment)
+        comment = image[2]
+        count = image[1]
+        if count == 0:
+            st.title("顔を検出出来ません。")
+        elif count < 80:
+            st.title("セレブというより「ポテト坊や」ですね")
+            test_image = Image.open("potato_bouya.jpg")
+            test_image = np.array(test_image.convert("RGB"))
+            test_image = cv2.cvtColor(test_image, 1)
+            st.image(test_image, use_column_width=False)
+        else:
+            st.title(f"シンクロ率{count}%、{comment[:-6]}です。")
+            test_image = Image.open(f"{comment}.jpg")
+            test_image = np.array(test_image.convert("RGB"))
+            test_image = cv2.cvtColor(test_image, 1)
+            st.image(test_image,use_column_width=False)
+        st.image(result_image)
 
     uploaded_file = st.file_uploader("回転してしまうときはこちらから", type=["png", "jpg","jpeg"], accept_multiple_files=False)
     if uploaded_file is not None:
@@ -94,9 +111,24 @@ if __name__ == '__main__':
         im_width = result_image.shape[0]
         aspect = im_height / im_width
         result_image = cv2.resize(result_image, (int(500 * aspect), 500))
-        comment = image[1]
+        comment = image[2]
+        count = image[1]
+        if count == 0:
+            st.title("顔を検出出来ません。")
+        elif count < 80:
+            st.title("セレブというより「ポテト坊や」ですね")
+            test_image = Image.open("potato_bouya.jpg")
+            test_image = np.array(test_image.convert("RGB"))
+            test_image = cv2.cvtColor(test_image, 1)
+            st.image(test_image, use_column_width=False)
 
-        st.image(result_image, caption=comment)
+        else:
+            st.title(f"シンクロ率{count}%、{comment[:-6]}です。")
+            test_image = Image.open(f"{comment}.jpg")
+            test_image = np.array(test_image.convert("RGB"))
+            test_image = cv2.cvtColor(test_image, 1)
+            st.image(test_image,use_column_width=False)
+        st.image(result_image)
 
 
 
