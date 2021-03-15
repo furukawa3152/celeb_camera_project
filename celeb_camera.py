@@ -97,7 +97,7 @@ if __name__ == '__main__':
             test_image = np.array(test_image.convert("RGB"))
             test_image = cv2.cvtColor(test_image, 1)
             st.image(test_image,use_column_width=False)
-        st.image(result_image,caption=count)
+        st.image(result_image)
 
     uploaded_file = st.file_uploader("回転してしまうときはこちらから", type=["png", "jpg","jpeg"], accept_multiple_files=False)
     if uploaded_file is not None:
@@ -130,7 +130,7 @@ if __name__ == '__main__':
             test_image = np.array(test_image.convert("RGB"))
             test_image = cv2.cvtColor(test_image, 1)
             st.image(test_image,use_column_width=False)
-        st.image(result_image,caption=count)
+        st.image(result_image)
 
 
 
