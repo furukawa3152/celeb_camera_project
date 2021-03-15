@@ -84,19 +84,20 @@ if __name__ == '__main__':
         count = image[1]
         if count == 0:
             st.title("顔を検出出来ません。")
-        elif count < 80:
+        elif count <= 80:
             st.title("セレブというより「ポテト坊や」ですね")
             test_image = Image.open("potato_bouya.jpg")
             test_image = np.array(test_image.convert("RGB"))
             test_image = cv2.cvtColor(test_image, 1)
             st.image(test_image, use_column_width=False)
         else:
-            st.title(f"シンクロ率{count}%、{comment[:-6]}です。")
+            sync = (count * 100 - 8000) / 20
+            st.title(f"シンクロ率{sync}%、{comment[:-6]}です。")
             test_image = Image.open(f"{comment}.jpg")
             test_image = np.array(test_image.convert("RGB"))
             test_image = cv2.cvtColor(test_image, 1)
             st.image(test_image,use_column_width=False)
-        st.image(result_image)
+        st.image(result_image,caption=count)
 
     uploaded_file = st.file_uploader("回転してしまうときはこちらから", type=["png", "jpg","jpeg"], accept_multiple_files=False)
     if uploaded_file is not None:
@@ -115,7 +116,7 @@ if __name__ == '__main__':
         count = image[1]
         if count == 0:
             st.title("顔を検出出来ません。")
-        elif count < 80:
+        elif count <= 80:
             st.title("セレブというより「ポテト坊や」ですね")
             test_image = Image.open("potato_bouya.jpg")
             test_image = np.array(test_image.convert("RGB"))
@@ -123,12 +124,13 @@ if __name__ == '__main__':
             st.image(test_image, use_column_width=False)
 
         else:
-            st.title(f"シンクロ率{count}%、{comment[:-6]}です。")
+            sync = (count * 100 - 8000) / 20
+            st.title(f"シンクロ率{sync}%、{comment[:-6]}です。")
             test_image = Image.open(f"{comment}.jpg")
             test_image = np.array(test_image.convert("RGB"))
             test_image = cv2.cvtColor(test_image, 1)
             st.image(test_image,use_column_width=False)
-        st.image(result_image)
+        st.image(result_image,caption=count)
 
 
 
